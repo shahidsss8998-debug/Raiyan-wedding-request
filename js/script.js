@@ -238,33 +238,20 @@
   }
 
 
+
+
   /* -----------------------------------------------------------
-     4. BACKGROUND MUSIC (BGM) CONTROLLER
+     4. AUTOMATIC BACKGROUND MUSIC (BGM)
      ----------------------------------------------------------- */
 
   let playWeddingMusic = null;
 
   function initBGM() {
-    const audio       = $('#bgm-audio');
-    const player      = $('#music-player');
-    const toggleBtn   = $('#music-toggle');
-    const statusText  = $('#music-status-text');
-    const toast       = $('#music-toast');
-
-    if (!audio || !player || !toggleBtn) return;
+    const audio = $('#bgm-audio');
+    if (!audio) return;
 
     let isPlaying = false;
     let fadeInterval = null;
-    let toastTimer = null;
-
-    function showToast() {
-      if (!toast) return;
-      toast.classList.add('is-visible');
-      clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        toast.classList.remove('is-visible');
-      }, 4000);
-    }
 
     function smoothVolume(target, durationMs, onDone) {
       clearInterval(fadeInterval);
@@ -294,43 +281,14 @@
         promise
           .then(() => {
             isPlaying = true;
-            player.classList.add('is-playing');
-            toggleBtn.setAttribute('aria-pressed', 'true');
-            if (statusText) statusText.textContent = 'Playing';
             smoothVolume(0.55, 1500);
-            showToast();
             removeGestureListeners();
           })
           .catch((err) => {
-            console.info('Audio play waiting for user gesture:', err.message);
+            console.info('Autoplay waiting for initial user interaction:', err.message);
           });
       }
     }
-
-    function pause() {
-      if (!isPlaying) return;
-
-      smoothVolume(0, 400, () => {
-        audio.pause();
-        isPlaying = false;
-        player.classList.remove('is-playing');
-        toggleBtn.setAttribute('aria-pressed', 'false');
-        if (statusText) statusText.textContent = 'Play BGM';
-      });
-    }
-
-    function toggle() {
-      if (isPlaying) {
-        pause();
-      } else {
-        play();
-      }
-    }
-
-    toggleBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      toggle();
-    });
 
     // Lower volume when user switches tabs, restore when returning
     document.addEventListener('visibilitychange', () => {
@@ -342,10 +300,10 @@
       }
     });
 
-    // Expose play function to trigger from Hero buttons or external events
+    // Expose play function to trigger from Hero buttons or other events
     playWeddingMusic = play;
 
-    // Helper to start playback on first user gesture if browser blocks 2s timer
+    // Helper to start playback on first user gesture if browser blocks immediate/delayed autoplay
     function tryPlayOnFirstGesture() {
       if (!isPlaying) {
         play();
@@ -363,7 +321,10 @@
       window.addEventListener(evt, tryPlayOnFirstGesture, { capture: true, once: true, passive: true });
     });
 
-    // Automatically play 2 seconds after website opening
+    // Try playing immediately
+    play();
+
+    // Automatically try again 2 seconds after website opening
     setTimeout(() => {
       if (!isPlaying) {
         play();
@@ -511,8 +472,8 @@
     const feedback    = $('#copy-feedback');
 
     const shareData = {
-      title: 'Mohammed Usama & Afifa Mariyam — Wedding Invitation',
-      text: 'You are cordially invited to the Nikah and Walima of Mohammed Usama & Afifa Mariyam on 22 November 2026.',
+      title: 'Afifa Mariyam & Mohammed Usama — Wedding Invitation',
+      text: 'You are cordially invited to the Nikah and Walima of Afifa Mariyam & Mohammed Usama on 22 November 2026.',
       url: window.location.href,
     };
 
@@ -583,16 +544,16 @@
 
         if (event === 'nikah') {
           icsContent = generateICS({
-            title: 'Nikah — Mohammed Usama & Afifa Mariyam',
-            description: 'Nikah ceremony of Mohammed Usama & Afifa Mariyam at Haji Ismail Sait Mosque, Frazer Town, Bangalore.',
+            title: 'Nikah — Afifa Mariyam & Mohammed Usama',
+            description: 'Nikah ceremony of Afifa Mariyam & Mohammed Usama at Haji Ismail Sait Mosque, Frazer Town, Bangalore.',
             location: 'Haji Ismail Sait Mosque, Frazer Town, Bangalore 560005',
             startUTC: '20261122T064500Z',  // 12:15 PM IST = 06:45 UTC
             endUTC:   '20261122T080000Z',  // ~1:30 PM IST
           });
         } else if (event === 'walima') {
           icsContent = generateICS({
-            title: 'Walima — Mohammed Usama & Afifa Mariyam',
-            description: 'Walima lunch of Mohammed Usama & Afifa Mariyam at Adam\'s House, Richards Town, Bangalore.',
+            title: 'Walima — Afifa Mariyam & Mohammed Usama',
+            description: 'Walima lunch of Afifa Mariyam & Mohammed Usama at Adam\'s House, Richards Town, Bangalore.',
             location: 'Adam\'s House, #48 Viviani Road, Richards Town, Bangalore 560005',
             startUTC: '20261122T080000Z',  // 1:30 PM IST = 08:00 UTC
             endUTC:   '20261122T103000Z',  // ~4:00 PM IST
@@ -600,7 +561,7 @@
         }
 
         if (icsContent) {
-          downloadICS(icsContent, `${event}-usama-afifa.ics`);
+          downloadICS(icsContent, `${event}-afifa-usama.ics`);
         }
       });
     });

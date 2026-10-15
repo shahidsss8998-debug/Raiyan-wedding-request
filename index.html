@@ -3,9 +3,9 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="You are cordially invited to the Nikah and Walima celebration of Mohammed Usama &amp; Afifa Mariyam on 22 November 2026 in Bangalore." />
+  <meta name="description" content="You are cordially invited to the Nikah and Walima celebration of Afifa Mariyam &amp; Mohammed Usama on 22 November 2026 in Bangalore." />
   <meta name="theme-color" content="#526344" />
-  <title>Mohammed Usama &amp; Afifa Mariyam — Wedding Invitation</title>
+  <title>Afifa Mariyam &amp; Mohammed Usama — Wedding Invitation</title>
 
   <!-- Favicon -->
   <link rel="icon" type="image/png" href="assets/favicon.png" />
@@ -99,9 +99,9 @@
       </div>
 
       <h1 class="hero__names reveal-text" data-delay="3">
-        <span class="hero__name hero__name--groom">Mohammed Usama</span>
-        <span class="hero__ampersand">&amp;</span>
         <span class="hero__name hero__name--bride">Afifa Mariyam</span>
+        <span class="hero__ampersand">&amp;</span>
+        <span class="hero__name hero__name--groom">Mohammed Usama</span>
       </h1>
 
       <p class="hero__invitation-text reveal-text" data-delay="4">
@@ -189,39 +189,8 @@
       </div>
 
       <div class="couple__cards">
-        <!-- Groom Card -->
-        <article class="couple-card reveal-up" data-delay="0">
-          <div class="couple-card__portrait">
-            <div class="couple-card__frame">
-              <img
-                src="assets/groom.jpg"
-                alt="Portrait of Mohammed Usama, the Groom"
-                class="couple-card__img"
-                loading="lazy"
-                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
-              />
-              <div class="couple-card__placeholder" aria-hidden="true">
-                <span>MU</span>
-              </div>
-            </div>
-          </div>
-          <p class="couple-card__label">THE GROOM</p>
-          <h3 class="couple-card__name">Mohammed Usama</h3>
-          <p class="couple-card__qualification">MBA</p>
-          <div class="couple-card__divider" aria-hidden="true"></div>
-          <div class="couple-card__details">
-            <p>Paternal Grand S/o Late Janab<br/><strong>Patnam Abdul Subhan Saheb</strong></p>
-            <p>Maternal Grand S/o Late Janab<br/><strong>Fairoz Basha Saheb</strong></p>
-          </div>
-        </article>
-
-        <!-- Ampersand between cards -->
-        <div class="couple__ampersand reveal-up" aria-hidden="true">
-          <span>&amp;</span>
-        </div>
-
         <!-- Bride Card -->
-        <article class="couple-card reveal-up" data-delay="1">
+        <article class="couple-card reveal-up" data-delay="0">
           <div class="couple-card__portrait">
             <div class="couple-card__frame">
               <img
@@ -243,6 +212,37 @@
             <p>D/o Late Janab<br/><strong>Nadhim Ahmed Saheb</strong></p>
             <p>Paternal Grand D/o Late<br/><strong>M. Nisar Ahmed Saheb</strong></p>
             <p>Maternal Grand D/o Janab<br/><strong>A. Fayaz Ahmed Saheb</strong></p>
+          </div>
+        </article>
+
+        <!-- Ampersand between cards -->
+        <div class="couple__ampersand reveal-up" aria-hidden="true">
+          <span>&amp;</span>
+        </div>
+
+        <!-- Groom Card -->
+        <article class="couple-card reveal-up" data-delay="1">
+          <div class="couple-card__portrait">
+            <div class="couple-card__frame">
+              <img
+                src="assets/groom.jpg"
+                alt="Portrait of Mohammed Usama, the Groom"
+                class="couple-card__img"
+                loading="lazy"
+                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+              />
+              <div class="couple-card__placeholder" aria-hidden="true">
+                <span>MU</span>
+              </div>
+            </div>
+          </div>
+          <p class="couple-card__label">THE GROOM</p>
+          <h3 class="couple-card__name">Mohammed Usama</h3>
+          <p class="couple-card__qualification">MBA</p>
+          <div class="couple-card__divider" aria-hidden="true"></div>
+          <div class="couple-card__details">
+            <p>Paternal Grand S/o Late Janab<br/><strong>Patnam Abdul Subhan Saheb</strong></p>
+            <p>Maternal Grand S/o Late Janab<br/><strong>Fairoz Basha Saheb</strong></p>
           </div>
         </article>
       </div>
@@ -649,7 +649,7 @@
         </svg>
       </div>
 
-      <h2 class="footer__names">Mohammed Usama &amp; Afifa Mariyam</h2>
+      <h2 class="footer__names">Afifa Mariyam &amp; Mohammed Usama</h2>
       <p class="footer__date">22 NOVEMBER 2026</p>
 
       <div class="divider divider--gold divider--small" aria-hidden="true">
@@ -665,49 +665,13 @@
   </footer>
 
   <!-- ============================================================
-       BACKGROUND MUSIC (BGM) & FLOATING CONTROLLER
+       BACKGROUND MUSIC (BGM) — AUTOMATIC PLAYBACK
        ============================================================ -->
   <audio id="bgm-audio" loop preload="auto" playsinline>
     <source src="assets/wedding-nasheed.mp3" type="audio/mpeg" />
     <source src="assets/wedding-nasheed.mpeg" type="audio/mpeg" />
     <source src="🎵( Wedding Nasheed • Muhammad Al Muqit ).mpeg" type="audio/mpeg" />
   </audio>
-
-  <!-- Floating Luxury Music Controller -->
-  <div id="music-player" class="music-player" role="region" aria-label="Wedding Nasheed Player">
-    <button
-      id="music-toggle"
-      class="music-player__btn"
-      type="button"
-      aria-label="Play background music: Wedding Nasheed by Muhammad Al Muqit"
-      aria-pressed="false"
-      title="Wedding Nasheed • Muhammad Al Muqit"
-    >
-      <span class="music-player__disc" aria-hidden="true">
-        <span class="music-player__disc-inner"></span>
-      </span>
-      <span class="music-player__eq" aria-hidden="true">
-        <span class="music-player__bar music-player__bar--1"></span>
-        <span class="music-player__bar music-player__bar--2"></span>
-        <span class="music-player__bar music-player__bar--3"></span>
-        <span class="music-player__bar music-player__bar--4"></span>
-      </span>
-      <span class="music-player__details">
-        <span class="music-player__title">Wedding Nasheed</span>
-        <span class="music-player__artist">Muhammad Al Muqit</span>
-      </span>
-      <span class="music-player__status-pill" id="music-status-pill">
-        <span class="music-player__status-dot" aria-hidden="true"></span>
-        <span class="music-player__status-text" id="music-status-text">Play BGM</span>
-      </span>
-    </button>
-  </div>
-
-  <!-- Music Notification Toast -->
-  <div id="music-toast" class="music-toast" role="status" aria-live="polite">
-    <span class="music-toast__icon" aria-hidden="true">🎵</span>
-    <span class="music-toast__msg">Now Playing: <strong>Wedding Nasheed</strong> • Muhammad Al Muqit</span>
-  </div>
 
   <!-- Main Script -->
   <script src="js/script.js"></script>
