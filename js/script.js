@@ -250,86 +250,72 @@
     const audio = $('#bgm-audio');
     if (!audio) return;
 
-    let isPlaying = false;
-    let fadeInterval = null;
+    // Ensure audible volume right away
+    audio.volume = 0.65;
 
-    function smoothVolume(target, durationMs, onDone) {
-      clearInterval(fadeInterval);
-      const stepTime = 50;
-      const steps = Math.max(1, Math.floor(durationMs / stepTime));
-      const delta = (target - audio.volume) / steps;
+    function playAudio() {
+      if (!audio.paused && audio.currentTime > 0) {
+        removeGestureListeners();
+        return;
+      }
 
-      fadeInterval = setInterval(() => {
-        const next = audio.volume + delta;
-        if ((delta > 0 && next >= target) || (delta < 0 && next <= target)) {
-          audio.volume = target;
-          clearInterval(fadeInterval);
-          if (typeof onDone === 'function') onDone();
-        } else {
-          audio.volume = Math.max(0, Math.min(1, next));
-        }
-      }, stepTime);
-    }
-
-    function play() {
-      if (isPlaying) return;
-
-      audio.volume = 0;
+      audio.volume = 0.65;
       const promise = audio.play();
 
       if (promise !== undefined) {
         promise
           .then(() => {
-            isPlaying = true;
-            smoothVolume(0.55, 1500);
             removeGestureListeners();
           })
           .catch((err) => {
-            console.info('Autoplay waiting for initial user interaction:', err.message);
+            // Keep gesture listeners active so the very first interaction triggers play
+            console.info('Autoplay deferred until user interaction:', err.message);
           });
       }
     }
 
+    // Expose play function
+    playWeddingMusic = playAudio;
+
     // Lower volume when user switches tabs, restore when returning
     document.addEventListener('visibilitychange', () => {
-      if (!isPlaying) return;
+      if (audio.paused) return;
       if (document.hidden) {
-        smoothVolume(0.12, 600);
+        audio.volume = 0.15;
       } else {
-        smoothVolume(0.55, 600);
+        audio.volume = 0.65;
       }
     });
 
-    // Expose play function to trigger from Hero buttons or other events
-    playWeddingMusic = play;
+    const gestureEvents = ['click', 'pointerdown', 'mousedown', 'mouseup', 'touchstart', 'touchend', 'keydown'];
 
-    // Helper to start playback on first user gesture if browser blocks immediate/delayed autoplay
-    function tryPlayOnFirstGesture() {
-      if (!isPlaying) {
-        play();
-      }
-      removeGestureListeners();
+    function onUserGesture() {
+      playAudio();
     }
 
     function removeGestureListeners() {
-      ['click', 'pointerdown', 'touchstart', 'scroll', 'keydown'].forEach((evt) => {
-        window.removeEventListener(evt, tryPlayOnFirstGesture, { capture: true });
+      gestureEvents.forEach((evt) => {
+        window.removeEventListener(evt, onUserGesture, true);
+        document.removeEventListener(evt, onUserGesture, true);
       });
     }
 
-    ['click', 'pointerdown', 'touchstart', 'scroll', 'keydown'].forEach((evt) => {
-      window.addEventListener(evt, tryPlayOnFirstGesture, { capture: true, once: true, passive: true });
+    gestureEvents.forEach((evt) => {
+      window.addEventListener(evt, onUserGesture, { capture: true, passive: true });
+      document.addEventListener(evt, onUserGesture, { capture: true, passive: true });
     });
 
-    // Try playing immediately
-    play();
+    // Attempt playback immediately upon page load
+    playAudio();
 
-    // Automatically try again 2 seconds after website opening
-    setTimeout(() => {
-      if (!isPlaying) {
-        play();
-      }
-    }, 2000);
+    // Re-attempt playback at staggered intervals (including 2s after load)
+    [300, 800, 1500, 2000].forEach((delay) => {
+      setTimeout(() => {
+        if (audio.paused) {
+          playAudio();
+        }
+      }, delay);
+    });
   }
 
 
@@ -338,16 +324,20 @@
      ----------------------------------------------------------- */
 
   function initHeroButtons() {
+    const audio     = $('#bgm-audio');
     const openBtn   = $('#btn-open-invitation');
     const scrollBtn = $('#btn-scroll-discover');
 
+    function triggerAudio() {
+      if (audio) {
+        audio.volume = 0.65;
+        audio.play().catch(() => {});
+      }
+    }
+
     if (openBtn) {
       openBtn.addEventListener('click', () => {
-        // Start background music automatically on invitation open
-        if (typeof playWeddingMusic === 'function') {
-          playWeddingMusic();
-        }
-
+        triggerAudio();
         const target = $('#introduction') || $('#couple');
         if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
@@ -355,10 +345,7 @@
 
     if (scrollBtn) {
       scrollBtn.addEventListener('click', () => {
-        if (typeof playWeddingMusic === 'function') {
-          playWeddingMusic();
-        }
-
+        triggerAudio();
         const target = $('#introduction') || $('#couple');
         if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
